@@ -69,7 +69,7 @@ exports.addKuponDeal = function(req, res) {
                 res.send({'error':'An error has occurred'});
             } else {
                 console.log('Success: ' + JSON.stringify(result[0]));
-                res.send(result[0]);
+                res.send({'success':'successfully saved'});
             }
         });
     });
@@ -78,16 +78,15 @@ exports.addKuponDeal = function(req, res) {
 exports.updateKuponDeal = function(req, res) {
     var id = req.params.id;
     var kuponDeal = req.body;
-    console.log('Updating kuponDeal: ' + id);
-    console.log(JSON.stringify(kuponDeal));
+    console.log('Updating kuponDeal: ' +  JSON.stringify(kuponDeal));
     db.collection('kuponDeal', function(err, collection) {
-        collection.update({_id:new ObjectID(id)}, kuponDeal, function(err, result) {
+        collection.update({_id:new ObjectID(id)},{ $set:kuponDeal}, function(err, result) {
             if (err) {
                 console.log('Error updating kuponDeal: ' + err);
                 res.send({'error':'An error has occurred'});
             } else {
                 console.log('' + result + ' document(s) updated');
-                res.send(kuponDeal);
+                res.send({'success' : 'deal has been updated successfully.'});
             }
         });
     });
@@ -102,7 +101,7 @@ exports.deleteKuponDeal = function(req, res) {
                 res.send({'error':'An error has occurred - ' + err});
             } else {
                 console.log('' + result + ' document(s) deleted');
-                res.send(req.body);
+                res.send({'success' : 'deal removed successfully.'});
             }
         });
     });
@@ -117,7 +116,7 @@ exports.removeAllKuponDeal = function(req, res) {
                 res.send({'error':'An error has occurred - ' + err});
             } else {
                 console.log('' + result + ' document(s) deleted');
-                res.send(req.body);
+                res.send({'success' : 'deal removed successfully.'});
             }
         });
     });
